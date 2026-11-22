@@ -117,7 +117,11 @@ async function listedAlbums() {
     const id = albumId(entry);
     const separator = entry.indexOf(' - ');
     if (id) {
-      albums.push({ id, url: entry, source: 'listed' });
+      // A link can be followed by its names, as in "<link>  # Artist - Album".
+      const note = line.slice(line.indexOf('#') + 1).trim();
+      const split = line.includes('#') ? note.indexOf(' - ') : -1;
+      const names = split > 0 ? { artist: note.slice(0, split).trim(), album: note.slice(split + 3).trim() } : {};
+      albums.push({ id, url: entry, ...names, source: 'listed' });
     } else if (separator > 0) {
       const artist = entry.slice(0, separator).trim();
       const album = entry.slice(separator + 3).trim();
@@ -287,6 +291,7 @@ async function main() {
     const file = path.join(coversDir, `${album.id}.webp`);
     if (!(await needsLookup(state[album.id], file))) {
       if (album.lastSeen) state[album.id].lastSeen = album.lastSeen;
+      if (!state[album.id].artist && album.artist) Object.assign(state[album.id], { artist: album.artist, album: album.album });
       counts.kept++;
       continue;
     }

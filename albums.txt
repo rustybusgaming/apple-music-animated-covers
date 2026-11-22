@@ -3,6 +3,7 @@
 # an Apple Music album link or "Artist - Album", for example:
 # https://music.apple.com/us/album/perception/1440848910
 # Fleetwood Mac - Rumours
+# A link can be followed by the album's names after a "#", as below.
 #
 # To check whether an album has an animated cover at all, search for it on
 # https://artwork.m8tec.top
