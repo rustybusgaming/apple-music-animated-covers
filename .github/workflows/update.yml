@@ -1,0 +1,82 @@
+# Updates the animated album covers once a day and publishes them with GitHub
+# Pages. It can also be run by hand from the Actions tab, and runs when
+# albums.txt or the build script changes.
+
+name: Update animated covers
+
+on:
+  schedule:
+    - cron: '37 5 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['albums.txt', 'scripts/**', '.github/workflows/update.yml']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    services:
+      # Finds the animated covers on Apple Music:
+      # https://github.com/m8tec/apple-music-animated-artworks
+      artworks:
+        image: ghcr.io/m8tec/apple-music-animated-artworks:latest
+        ports:
+          - 8080:8080
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ffmpeg
+
+      # Covers from earlier runs, so each album is only converted once.
+      - name: Restore covers from earlier runs
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            site/covers
+            state
+          key: covers-${{ github.run_id }}
+          restore-keys: covers-
+
+      - name: Update covers
+        run: node scripts/build.mjs
+
+      - name: Save covers for the next run
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            site/covers
+            state
+          key: covers-${{ github.run_id }}-${{ github.run_attempt }}
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

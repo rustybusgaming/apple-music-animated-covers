@@ -1,0 +1,3 @@
+# Extra albums to make animated covers for, on top of Apple's charts.
+# One Apple Music album link per line, for example:
+# https://music.apple.com/us/album/perception/1440848910
