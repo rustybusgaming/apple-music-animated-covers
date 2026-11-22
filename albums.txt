@@ -6,3 +6,104 @@
 #
 # To check whether an album has an animated cover at all, search for it on
 # https://artwork.m8tec.top
+
+# Hip hop
+
+https://music.apple.com/us/album/gnx/1781270319  # Kendrick Lamar - GNX
+https://music.apple.com/us/album/mr-morale-the-big-steppers/1623854804  # Kendrick Lamar - Mr. Morale & The Big Steppers
+https://music.apple.com/us/album/damn/1440881047  # Kendrick Lamar - DAMN.
+https://music.apple.com/us/album/good-kid-m-a-a-d-city/1471263898  # Kendrick Lamar - good kid, m.A.A.d city
+https://music.apple.com/us/album/to-pimp-a-butterfly/1440828886  # Kendrick Lamar - To Pimp a Butterfly
+https://music.apple.com/us/album/for-all-the-dogs/1710685602  # Drake - For All The Dogs
+https://music.apple.com/us/album/her-loss/1652998965  # Drake & 21 Savage - Her Loss
+https://music.apple.com/us/album/certified-lover-boy/1584281467  # Drake - Certified Lover Boy
+https://music.apple.com/us/album/honestly-nevermind/1630230040  # Drake - Honestly, Nevermind
+https://music.apple.com/us/album/%24ome-%24exy-%24ongs-4-u/6814095592  # PARTYNEXTDOOR & Drake - $ome $exy $ongs 4 U
+https://music.apple.com/us/album/scorpion/1418213110  # Drake - Scorpion
+https://music.apple.com/us/album/views/1440841363  # Drake - Views
+https://music.apple.com/us/album/utopia/1699712635  # Travis Scott - UTOPIA
+https://music.apple.com/us/album/astroworld/1421241217  # Travis Scott - ASTROWORLD
+https://music.apple.com/us/album/rodeo/1456176981  # Travis Scott - Rodeo
+https://music.apple.com/us/album/jackboys-2/1826343589  # JACKBOYS & Travis Scott - JACKBOYS 2
+https://music.apple.com/us/album/chromakopia/1776500452  # Tyler, The Creator - CHROMAKOPIA
+https://music.apple.com/us/album/dont-tap-the-glass/1827715784  # Tyler, The Creator - DON'T TAP THE GLASS
+https://music.apple.com/us/album/call-me-if-you-get-lost-the-estate-sale/1679454273  # Tyler, The Creator - CALL ME IF YOU GET LOST: The Estate Sale
+https://music.apple.com/us/album/igor/1463409338  # Tyler, The Creator - IGOR
+https://music.apple.com/us/album/flower-boy/1254572564  # Tyler, The Creator - Flower Boy
+https://music.apple.com/us/album/we-dont-trust-you/1737149923  # Future & Metro Boomin - WE DON'T TRUST YOU
+https://music.apple.com/us/album/we-still-dont-trust-you/1740864541  # Future & Metro Boomin - WE STILL DON'T TRUST YOU
+https://music.apple.com/us/album/heroes-villains/1657271960  # Metro Boomin - HEROES & VILLAINS
+https://music.apple.com/us/album/mixtape-pluto/1767829562  # Future - MIXTAPE PLUTO
+https://music.apple.com/us/album/i-never-liked-you/1621119097  # Future - I NEVER LIKED YOU
+https://music.apple.com/us/album/american-dream/1724494274  # 21 Savage - american dream
+https://music.apple.com/us/album/music/1802175271  # Playboi Carti - MUSIC
+https://music.apple.com/us/album/whole-lotta-red/1546163603  # Playboi Carti - Whole Lotta Red
+https://music.apple.com/us/album/pink-tape/1694343104  # Lil Uzi Vert - Pink Tape
+https://music.apple.com/us/album/eternal-atake/1501843464  # Lil Uzi Vert - Eternal Atake
+https://music.apple.com/us/album/wham/1786672591  # Lil Baby - WHAM
+https://music.apple.com/us/album/its-only-me/1648587138  # Lil Baby - It's Only Me
+https://music.apple.com/us/album/one-of-wun/1744458034  # Gunna - One of Wun
+https://music.apple.com/us/album/a-gift-a-curse/1692838126  # Gunna - a Gift & a Curse
+https://music.apple.com/us/album/the-death-of-slim-shady-coup-de-gr%C3%A2ce/1755022177  # Eminem - The Death of Slim Shady (Coup De Grâce)
+https://music.apple.com/us/album/music-to-be-murdered-by/1495267282  # Eminem - Music To Be Murdered By
+https://music.apple.com/us/album/the-eminem-show/1440903530  # Eminem - The Eminem Show
+https://music.apple.com/us/album/the-marshall-mathers-lp/1440866782  # Eminem - The Marshall Mathers LP
+https://music.apple.com/us/album/the-off-season/1567421945  # J. Cole - The Off-Season
+https://music.apple.com/us/album/2014-forest-hills-drive/1600766204  # J. Cole - 2014 Forest Hills Drive
+https://music.apple.com/us/album/graduation/1451901307  # Kanye West - Graduation
+https://music.apple.com/us/album/my-beautiful-dark-twisted-fantasy/1440742903  # Kanye West - My Beautiful Dark Twisted Fantasy
+https://music.apple.com/us/album/donda/1587795158  # Kanye West - Donda
+https://music.apple.com/us/album/vultures-1/1760997037  # ¥$, Kanye West & Ty Dolla $ign - VULTURES 1
+https://music.apple.com/us/album/pink-friday-2/1720307257  # Nicki Minaj - Pink Friday 2
+https://music.apple.com/us/album/megan/1752024169  # Megan Thee Stallion - MEGAN
+https://music.apple.com/us/album/glorious/1769454777  # GloRilla - GLORIOUS
+https://music.apple.com/us/album/am-i-the-drama/1821526317  # Cardi B - AM I THE DRAMA?
+https://music.apple.com/us/album/alligator-bites-never-heal/1763934442  # Doechii - Alligator Bites Never Heal
+https://music.apple.com/us/album/hardstone-psycho/1753900450  # Don Toliver - HARDSTONE PSYCHO
+https://music.apple.com/us/album/tha-carter-vi/1818939611  # Lil Wayne - Tha Carter VI
+https://music.apple.com/us/album/let-god-sort-em-out/1816313639  # Clipse, Pusha T & Malice - Let God Sort Em Out
+https://music.apple.com/us/album/balloonerism/1780891320  # Mac Miller - Balloonerism
+https://music.apple.com/us/album/circles/1494022962  # Mac Miller - Circles
+https://music.apple.com/us/album/swimming/1408996052  # Mac Miller - Swimming
+https://music.apple.com/us/album/legends-never-die/1526561014  # Juice WRLD - Legends Never Die
+https://music.apple.com/us/album/goodbye-good-riddance/1445927022  # Juice WRLD - Goodbye & Good Riddance
+https://music.apple.com/us/album/the-melodic-blue/1584419112  # Baby Keem - The Melodic Blue
+https://music.apple.com/us/album/last-lap/1772368554  # Rod Wave - Last Lap
+https://music.apple.com/us/album/almost-healed/1687215990  # Lil Durk - Almost Healed
+https://music.apple.com/us/album/business-is-business/1693938961  # Young Thug - BUSINESS IS BUSINESS
+https://music.apple.com/us/album/god-does-like-ugly/1812517697  # JID - God Does Like Ugly
+https://music.apple.com/us/album/the-forever-story/1637738689  # JID - The Forever Story
+https://music.apple.com/us/album/king-of-the-mischievous-south-vol-2/1746800438  # Denzel Curry - King Of The Mischievous South Vol. 2
+https://music.apple.com/us/album/testing/1387635013  # A$AP Rocky - TESTING
+https://music.apple.com/us/album/insano/1826864356  # Kid Cudi - INSANO
+https://music.apple.com/us/album/bando-stone-and-the-new-world/1757678472  # Childish Gambino - Bando Stone and The New World
+https://music.apple.com/us/album/hood-poet/1702084893  # Polo G - HOOD POET
+https://music.apple.com/us/album/masa/1824363644  # YoungBoy Never Broke Again - MASA
+https://music.apple.com/us/album/a-great-chaos/1710472300  # Ken Carson - A Great Chaos
+https://music.apple.com/us/album/more-chaos/1807926682  # Ken Carson - More Chaos
+https://music.apple.com/us/album/if-looks-could-kill/1684644634  # Destroy Lonely - If Looks Could Kill
+https://music.apple.com/us/album/2093/1731044406  # Yeat - 2093
+https://music.apple.com/us/album/lyfestyle/1774384537  # Yeat - LYFESTYLE
+https://music.apple.com/us/album/cant-rush-greatness/1783404289  # Central Cee - CAN'T RUSH GREATNESS
+https://music.apple.com/us/album/were-all-alone-in-this-together/1839573796  # Dave - We're All Alone In This Together
+https://music.apple.com/us/album/lotus/1794880972  # Little Simz - Lotus
+https://music.apple.com/us/album/plan-a/1767063070  # Lil Tecca - PLAN A
+https://music.apple.com/us/album/set-it-off/1707431017  # Offset - SET IT OFF
+https://music.apple.com/us/album/hope/1670412644  # NF - HOPE
+https://music.apple.com/us/album/the-search/1470132470  # NF - The Search
+https://music.apple.com/us/album/clouds-the-mixtape/1553380833  # NF - CLOUDS (THE MIXTAPE)
+https://music.apple.com/us/album/perception/1440848910  # NF - Perception
+
+# Hip hop classics
+
+https://music.apple.com/us/album/get-rich-or-die-tryin/6811473900  # 50 Cent - Get Rich Or Die Tryin'
+https://music.apple.com/us/album/2001/1440782221  # Dr. Dre - 2001
+https://music.apple.com/us/album/ready-to-die-the-remaster/204669326  # The Notorious B.I.G. - Ready to Die (The Remaster)
+https://music.apple.com/us/album/illmatic/662324135  # Nas - Illmatic
+https://music.apple.com/us/album/aquemini/266365274  # Outkast - Aquemini
+https://music.apple.com/us/album/the-miseducation-of-lauryn-hill/1276760743  # Lauryn Hill - The Miseducation of Lauryn Hill
+https://music.apple.com/us/album/the-blueprint/1440935272  # JAŸ-Z - The Blueprint
+https://music.apple.com/us/album/enter-the-wu-tang-36-chambers-expanded-edition/269842381  # Wu-Tang Clan - Enter The Wu-Tang (36 Chambers) [Expanded Edition]
+https://music.apple.com/us/album/all-eyez-on-me/1588480719  # 2Pac - All Eyez On Me
+https://music.apple.com/us/album/doggystyle/1676306182  # Snoop Dogg - Doggystyle
+https://music.apple.com/us/album/tha-carter-iii/1440737099  # Lil Wayne - Tha Carter III

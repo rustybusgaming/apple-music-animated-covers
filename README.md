@@ -7,7 +7,7 @@ Once a day, a GitHub Action:
 1. Collects albums from three places:
    - Apple's official charts of the most-played albums (US and UK, top 100 each).
    - The albums people recently looked up on [artwork.m8tec.top](https://artwork.m8tec.top), the public Apple Music Animated Artworks site. Those are kept for 30 days after they were last looked up there.
-   - Any albums listed in [`albums.txt`](albums.txt).
+   - Any albums listed in [`albums.txt`](albums.txt). It comes with 95 popular hip hop albums, new and classic. Albums without an animated cover are skipped, and checked again every two weeks in case Apple adds one.
 2. Looks up each album's animated cover with the [Apple Music Animated Artworks API](https://github.com/m8tec/apple-music-animated-artworks), which runs inside the Action. Albums from the public site come with theirs already.
 3. Converts the cover video into a small looping animated WebP with ffmpeg, the same way [Animated Artwork Downloader](https://github.com/m8tec/animated-artwork-downloader) does.
 4. Publishes the covers and a list of them ([`index.json`](https://rustybusgaming.github.io/apple-music-animated-covers/index.json)) with GitHub Pages.
