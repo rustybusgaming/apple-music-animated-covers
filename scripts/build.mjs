@@ -46,11 +46,20 @@ function albumId(url) {
   return String(url).match(/\/album\/(?:[^/?#]+\/)?(\d+)/)?.[1] || null;
 }
 
-async function fetchJson(url) {
-  const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
-  if (response.status === 404) return null;
-  if (!response.ok) throw new Error(`${url} returned ${response.status}`);
-  return response.json();
+// `attempts` > 1 retries failures with a growing pause, for services that
+// sometimes have a moment (Apple's chart feed has returned 502s).
+async function fetchJson(url, attempts = 1) {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+      if (response.status === 404) return null;
+      if (!response.ok) throw new Error(`${url} returned ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      if (attempt >= attempts) throw error;
+      await sleep(5000 * attempt);
+    }
+  }
 }
 
 // ------------------------------------------------------------------ albums
@@ -60,7 +69,7 @@ async function chartAlbums() {
   for (const storefront of config.storefronts) {
     const url = config.chartsUrl.replace('{storefront}', storefront).replace('{size}', config.chartSize);
     try {
-      const data = await fetchJson(url);
+      const data = await fetchJson(url, 4);
       for (const item of data?.feed?.results || []) {
         albums.push({ id: String(item.id), artist: item.artistName, album: item.name, url: item.url });
       }
