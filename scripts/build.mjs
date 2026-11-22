@@ -1,10 +1,13 @@
 // Builds the animated album cover site that Apple Music Rich Presence uses.
 //
-//   1. Collects albums: Apple's official "most played albums" charts, plus any
-//      Apple Music album links in albums.txt.
+//   1. Collects albums: Apple's official "most played albums" charts, the
+//      albums people recently looked up on the public Apple Music Animated
+//      Artworks site (https://artwork.m8tec.top), and any albums in
+//      albums.txt (Apple Music links or "Artist - Album").
 //   2. Asks the Apple Music Animated Artworks API
 //      (https://github.com/m8tec/apple-music-animated-artworks, run locally as
 //      a Docker service by the workflow) for each album's animated cover.
+//      Albums from the public site already come with it.
 //   3. Converts the cover video into a small, looping animated WebP with
 //      ffmpeg, the same way https://github.com/m8tec/animated-artwork-downloader
 //      does.
@@ -12,9 +15,11 @@
 //
 // Covers and results from earlier runs are restored from the Actions cache, so
 // each album is only looked up and converted once. Covers for albums that are
-// no longer in the list are dropped, which keeps the site small.
+// no longer in the list are dropped, which keeps the site small. Albums from
+// the public site are kept for 30 days after they were last looked up there.
 
 import { execFile } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -27,6 +32,8 @@ const config = {
   chartsUrl: env.CHARTS_URL || 'https://rss.marketingtools.apple.com/api/v2/{storefront}/music/most-played/{size}/albums.json',
   storefronts: (env.STOREFRONTS || 'us,gb').split(',').map((s) => s.trim()).filter(Boolean),
   chartSize: Number(env.CHART_SIZE || 100),
+  historyUrl: env.HISTORY_URL ?? 'https://artwork.m8tec.top/api/v1/artwork/history',
+  keepHistoryDays: Number(env.KEEP_HISTORY_DAYS || 30),
   albumsFile: env.ALBUMS_FILE || 'albums.txt',
   siteDir: env.SITE_DIR || 'site',
   stateFile: env.STATE_FILE || 'state/state.json',
@@ -44,6 +51,21 @@ const coversDir = path.join(config.siteDir, 'covers');
 
 function albumId(url) {
   return String(url).match(/\/album\/(?:[^/?#]+\/)?(\d+)/)?.[1] || null;
+}
+
+// Albums without an Apple Music ID (added by name, or from the public site's
+// history) get an ID made from their names; the app matches those by name.
+function nameKey(text) {
+  return String(text || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/\p{M}/gu, '')
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim();
+}
+
+function nameId(artist, album) {
+  return `n${createHash('sha1').update(`${nameKey(artist)}|${nameKey(album)}`).digest('hex').slice(0, 12)}`;
 }
 
 // `attempts` > 1 retries failures with a growing pause, for services that
@@ -90,13 +112,45 @@ async function listedAlbums() {
   }
   const albums = [];
   for (const line of text.split('\n')) {
-    const url = line.replace(/#.*/, '').trim();
-    if (!url) continue;
-    const id = albumId(url);
-    if (id) albums.push({ id, url });
-    else console.warn(`albums.txt: not an Apple Music album link: ${url}`);
+    const entry = line.replace(/#.*/, '').trim();
+    if (!entry) continue;
+    const id = albumId(entry);
+    const separator = entry.indexOf(' - ');
+    if (id) {
+      albums.push({ id, url: entry, source: 'listed' });
+    } else if (separator > 0) {
+      const artist = entry.slice(0, separator).trim();
+      const album = entry.slice(separator + 3).trim();
+      albums.push({ id: nameId(artist, album), artist, album, source: 'listed' });
+    } else {
+      console.warn(`albums.txt: expected an Apple Music album link or "Artist - Album": ${entry}`);
+    }
   }
   return albums;
+}
+
+// The albums people recently looked up on the public Apple Music Animated
+// Artworks site, with their animated cover's video already found.
+async function historyAlbums() {
+  if (!config.historyUrl) return [];
+  try {
+    const entries = (await fetchJson(config.historyUrl, 3)) || [];
+    const albums = entries
+      .filter((entry) => entry.url && entry.artist && entry.album)
+      .map((entry) => ({
+        id: nameId(entry.artist, entry.album),
+        artist: entry.artist,
+        album: entry.album,
+        playlist: entry.url,
+        source: 'history',
+        lastSeen: new Date().toISOString(),
+      }));
+    console.log(`Recently looked up on ${new URL(config.historyUrl).host}: ${albums.length} albums`);
+    return albums;
+  } catch (error) {
+    console.warn(`Couldn't load the recent lookups: ${error.message}`);
+    return [];
+  }
 }
 
 // ----------------------------------------------------------------- covers
@@ -193,8 +247,34 @@ async function main() {
   } catch {}
 
   const albums = new Map();
-  for (const album of [...(await listedAlbums()), ...(await chartAlbums())]) {
-    if (!albums.has(album.id)) albums.set(album.id, album);
+  const names = new Set();
+  const add = (album) => {
+    // Albums added by link have no names until they've been looked up once.
+    const known = state[album.id];
+    if (!album.artist && known?.artist) Object.assign(album, { artist: known.artist, album: known.album });
+
+    const existing = albums.get(album.id);
+    if (existing) {
+      // The same album from another source (say, by link and on the chart):
+      // keep the first, but learn its names.
+      if (!existing.artist && album.artist) Object.assign(existing, { artist: album.artist, album: album.album });
+    } else {
+      // Skip albums already in the list under another ID (say, a charting
+      // album someone also looked up on the public site).
+      if (album.artist && album.album && names.has(`${nameKey(album.artist)}|${nameKey(album.album)}`)) return;
+      albums.set(album.id, album);
+    }
+    const named = albums.get(album.id);
+    if (named.artist && named.album) names.add(`${nameKey(named.artist)}|${nameKey(named.album)}`);
+  };
+  for (const album of [...(await listedAlbums()), ...(await chartAlbums()), ...(await historyAlbums())]) add(album);
+
+  // Keep albums from the public site for a while after they leave its history.
+  const keepUntil = Date.now() - config.keepHistoryDays * 24 * 60 * 60 * 1000;
+  for (const [id, entry] of Object.entries(state)) {
+    if (entry.source === 'history' && Date.parse(entry.lastSeen || 0) > keepUntil) {
+      add({ id, artist: entry.artist, album: entry.album, source: 'history', lastSeen: entry.lastSeen });
+    }
   }
   console.log(`${albums.size} albums to cover`);
   if (!albums.size) throw new Error('No albums found: the charts and albums.txt were both empty');
@@ -206,6 +286,7 @@ async function main() {
   for (const album of albums.values()) {
     const file = path.join(coversDir, `${album.id}.webp`);
     if (!(await needsLookup(state[album.id], file))) {
+      if (album.lastSeen) state[album.id].lastSeen = album.lastSeen;
       counts.kept++;
       continue;
     }
@@ -215,10 +296,20 @@ async function main() {
 
     const label = `${album.artist || '?'} - ${album.album || album.id}`;
     try {
-      const result = await fetchJson(`${config.apiUrl}/api/v1/artwork/url?url=${encodeURIComponent(album.url)}`);
+      // Albums from the public site come with their video; look up the rest
+      // by Apple Music link, or by name.
+      let result = album.playlist ? { url: album.playlist } : null;
+      if (!result && album.url) {
+        result = await fetchJson(`${config.apiUrl}/api/v1/artwork/url?url=${encodeURIComponent(album.url)}`);
+      } else if (!result) {
+        const query = new URLSearchParams({ artist: album.artist, album: album.album });
+        result = await fetchJson(`${config.apiUrl}/api/v1/artwork/search?${query}`);
+      }
       const entry = {
         artist: album.artist || result?.artist,
         album: album.album || result?.album,
+        source: album.source || 'chart',
+        ...(album.lastSeen ? { lastSeen: album.lastSeen } : {}),
         checkedAt: new Date().toISOString(),
       };
       if (!result?.url) {
@@ -231,7 +322,15 @@ async function main() {
       counts.converted++;
       console.log(`Converted ${label} (${Math.round(bytes / 1024)} KB)`);
     } catch (error) {
-      state[album.id] = { ...state[album.id], status: 'failed', checkedAt: new Date().toISOString() };
+      state[album.id] = {
+        ...state[album.id],
+        artist: album.artist || state[album.id]?.artist,
+        album: album.album || state[album.id]?.album,
+        source: album.source || 'chart',
+        ...(album.lastSeen ? { lastSeen: album.lastSeen } : {}),
+        status: 'failed',
+        checkedAt: new Date().toISOString(),
+      };
       counts.failed++;
       console.warn(`Failed ${label}: ${error.message}`);
     }
